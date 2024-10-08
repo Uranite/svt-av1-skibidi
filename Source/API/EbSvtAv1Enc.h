@@ -1105,6 +1105,15 @@ typedef struct EbSvtAv1EncConfiguration {
      */
     uint8_t fast_decode_user_opts;
 
+    /**
+     * @brief Noise normalization strength; modifies the encoder's willingness
+     * to boost AC coefficients in low-noise blocks.
+     * Min value is 0.
+     * Max value is 4.
+     * Default is 1.
+     */
+    uint8_t noise_norm_strength;
+
     // clang-format off
     /* Add 128 Byte Padding to Struct to avoid changing the size of the public configuration struct */
     uint8_t padding[128
@@ -1117,6 +1126,7 @@ typedef struct EbSvtAv1EncConfiguration {
         - sizeof(uint8_t) // max_hierarchical_levels (runtime MG size change)
         - sizeof(uint8_t) // max_allowed_consecutive_frames_skips
         - sizeof(uint8_t) // fast_decode_user_opts
+        - sizeof(uint8_t) // noise_norm_strength
     ];
     // clang-format on
 } EbSvtAv1EncConfiguration;
