@@ -980,6 +980,15 @@ typedef struct EbSvtAv1EncConfiguration {
     int hbd_mds;
 
     /**
+     * @brief Noise normalization strength; modifies the encoder's willingness
+     * to boost AC coefficients in low-noise blocks.
+     * Min value is 0.
+     * Max value is 4.
+     * Default is 1.
+     */
+    uint8_t noise_norm_strength;
+
+    /**
      * @brief Enable MCTF for key frames.
      * 0 = off
      * 1 = on
