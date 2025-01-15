@@ -14,6 +14,7 @@
 
 #include "ac_bias.h"
 #include "aom_dsp_rtcd.h"
+#include "block_structures.h"
 #include "common_dsp_rtcd.h"
 #include "picture_operators_c.h"
 #include "utility.h"
