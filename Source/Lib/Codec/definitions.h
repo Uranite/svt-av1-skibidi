@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright(c) 2019 Intel Corporation
 * Copyright (c) 2016, Alliance for Open Media. All rights reserved
 *
@@ -1865,8 +1865,9 @@ typedef enum Tune {
     TUNE_PSNR = 1, // Average of (PSNR, SSIM, VMAF)
     TUNE_SSIM = 2, // SSIM-optimized
     TUNE_IQ   = 3, // Image Quality
-    TUNE_MS_SSIM = 4,  // MS_SSIM and SSIMULACRA2 optimized
-    TUNE_VMAF    = 5   // VMAF preprocessing (unsharp filter on luma)
+    TUNE_MS_SSIM     = 4,  // MS_SSIM and SSIMULACRA2 optimized
+    TUNE_VMAF        = 5,  // VMAF preprocessing (unsharp filter on luma)
+    TUNE_FILM_GRAIN  = 6   // Film Grain optimized
 } Tune;
 
 /*
