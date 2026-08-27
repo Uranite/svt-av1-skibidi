@@ -213,100 +213,6 @@ SUBPEL_VARIANCE_4XH_NEON_DOTPROD(16, 2)
 
 #undef SUBPEL_VARIANCE_4XH_NEON_DOTPROD
 
-// Interpolate 'a' and 'b' in the ratio 3:1.
-static inline uint8x8_t interp_3_1_w8(uint8x8_t a, uint8x8_t b) {
-    return vrhadd_u8(a, vhadd_u8(a, b));
-}
-
-// Interpolate 'a' and 'b' in the ratio 1:1. (Compute the average.)
-static inline uint8x8_t interp_1_1_w8(uint8x8_t a, uint8x8_t b) {
-    return vrhadd_u8(a, b);
-}
-
-// Interpolate 'a' and 'b' in the ratio 1:3.
-static inline uint8x8_t interp_1_3_w8(uint8x8_t a, uint8x8_t b) {
-    return vrhadd_u8(b, vhadd_u8(a, b));
-}
-
-// Interpolate 'a' and 'b' according to the filter specified by 'filter_offset'.
-static inline uint8x16_t interp_w16(uint8x16_t a, uint8x16_t b, int filter_offset) {
-    if (filter_offset == 0) {
-        return a;
-    }
-    const uint8x16_t avg = vhaddq_u8(a, b);
-    if (filter_offset == 1) {
-        return vrhaddq_u8(a, vhaddq_u8(a, avg));
-    }
-    if (filter_offset == 2) {
-        return vrhaddq_u8(a, avg);
-    }
-    if (filter_offset == 3) {
-        return vrhaddq_u8(a, vhaddq_u8(b, avg));
-    }
-    if (filter_offset == 4) {
-        return vrhaddq_u8(a, b);
-    }
-    if (filter_offset == 5) {
-        return vrhaddq_u8(b, vhaddq_u8(a, avg));
-    }
-    if (filter_offset == 6) {
-        return vrhaddq_u8(b, avg);
-    }
-    return vrhaddq_u8(b, vhaddq_u8(b, avg));
-}
-
-// Load adjacent pixel values and interpolate in ratio 3:1.
-static inline uint8x8_t load_interp_3_1_w8(const uint8_t* p) {
-    return interp_3_1_w8(vld1_u8(p), vld1_u8(p + 1));
-}
-
-// Load adjacent pixel values and interpolate in ratio 1:1.
-static inline uint8x8_t load_interp_1_1_w8(const uint8_t* p) {
-    return interp_1_1_w8(vld1_u8(p), vld1_u8(p + 1));
-}
-
-// Load adjacent pixel values and interpolate in ratio 1:3.
-static inline uint8x8_t load_interp_1_3_w8(const uint8_t* p) {
-    return interp_1_3_w8(vld1_u8(p), vld1_u8(p + 1));
-}
-
-// Load adjacent pixel values and interpolate according to 'filter_offset'.
-static inline uint8x8_t load_interp_w8(const uint8_t* p, int filter_offset) {
-    const uint8x8_t a = vld1_u8(p);
-    if (filter_offset == 0) {
-        return a;
-    }
-    const uint8x8_t b   = vld1_u8(p + 1);
-    const uint8x8_t avg = vhadd_u8(a, b);
-    if (filter_offset == 1) {
-        return vrhadd_u8(a, vhadd_u8(a, avg));
-    }
-    if (filter_offset == 2) {
-        return vrhadd_u8(a, avg);
-    }
-    if (filter_offset == 3) {
-        return vrhadd_u8(a, vhadd_u8(b, avg));
-    }
-    if (filter_offset == 4) {
-        return vrhadd_u8(a, b);
-    }
-    if (filter_offset == 5) {
-        return vrhadd_u8(b, vhadd_u8(a, avg));
-    }
-    if (filter_offset == 6) {
-        return vrhadd_u8(b, avg);
-    }
-    return vrhadd_u8(b, vhadd_u8(b, avg));
-}
-
-static inline uint8x16_t load_interp_w8x2(const uint8_t* p, int64_t stride, int filter_offset) {
-    const uint8x16_t a = load_u8_8x2(p, stride);
-    if (filter_offset == 0) {
-        return a;
-    }
-    return interp_w16(a, load_u8_8x2(p + 1, stride), filter_offset);
-}
-
 // Accumulate src and ref sums as well as the sum of squared error required to
 // calculate variance.
 static inline void var_w16_accum(uint32x4_t* src_sum, uint32x4_t* ref_sum, uint32x4_t* sse, uint8x16_t pred,
@@ -498,38 +404,6 @@ FUSED_SUBPEL_VARIANCE_8XH_NEON_DOTPROD(16)
 FUSED_SUBPEL_VARIANCE_8XH_NEON_DOTPROD(32)
 
 #undef FUSED_SUBPEL_VARIANCE_8XH_NEON_DOTPROD
-
-static inline uint8x16_t interp_3_1_w16(uint8x16_t a, uint8x16_t b) {
-    return vrhaddq_u8(a, vhaddq_u8(a, b));
-}
-
-static inline uint8x16_t interp_1_1_w16(uint8x16_t a, uint8x16_t b) {
-    return vrhaddq_u8(a, b);
-}
-
-static inline uint8x16_t interp_1_3_w16(uint8x16_t a, uint8x16_t b) {
-    return vrhaddq_u8(b, vhaddq_u8(a, b));
-}
-
-static inline uint8x16_t load_interp_w16(const uint8_t* p, int offset) {
-    const uint8x16_t a = vld1q_u8(p);
-    if (offset == 0) {
-        return a;
-    }
-    return interp_w16(a, vld1q_u8(p + 1), offset);
-}
-
-static inline uint8x16_t load_interp_3_1_w16(const uint8_t* p) {
-    return interp_3_1_w16(vld1q_u8(p), vld1q_u8(p + 1));
-}
-
-static inline uint8x16_t load_interp_1_1_w16(const uint8_t* p) {
-    return interp_1_1_w16(vld1q_u8(p), vld1q_u8(p + 1));
-}
-
-static inline uint8x16_t load_interp_1_3_w16(const uint8_t* p) {
-    return interp_1_3_w16(vld1q_u8(p), vld1q_u8(p + 1));
-}
 
 // Number of accumulators for block width W.
 #define ACCUM(W) (((W) / 16 >= 4) ? 4 : (W) / 16)
