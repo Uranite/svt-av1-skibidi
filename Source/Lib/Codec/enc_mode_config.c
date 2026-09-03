@@ -1131,7 +1131,7 @@ static void set_cdef_search_controls(PictureParentControlSet* pcs, uint8_t cdef_
         cdef_ctrls->use_reference_cdef_fs = is_not_highest_layer ? 0 : 1;
         cdef_ctrls->search_best_ref_fs    = is_base ? 0 : 1;
         cdef_ctrls->subsampling_factor    = 4;
-        cdef_ctrls->skip_th               = is_base ? 0 : 80;
+        cdef_ctrls->skip_th               = 0;
         cdef_ctrls->uv_from_y             = false;
         cdef_ctrls->use_qp_strength       = false;
         break;
@@ -1156,7 +1156,7 @@ static void set_cdef_search_controls(PictureParentControlSet* pcs, uint8_t cdef_
         cdef_ctrls->use_reference_cdef_fs = is_base ? 0 : 1;
         cdef_ctrls->search_best_ref_fs    = is_base ? 0 : 1;
         cdef_ctrls->subsampling_factor    = 4;
-        cdef_ctrls->skip_th               = is_base ? 0 : 80;
+        cdef_ctrls->skip_th               = 0;
         cdef_ctrls->uv_from_y             = true;
         cdef_ctrls->use_qp_strength       = false;
         break;
@@ -1178,7 +1178,7 @@ static void set_cdef_search_controls(PictureParentControlSet* pcs, uint8_t cdef_
         cdef_ctrls->use_reference_cdef_fs = is_base ? 0 : 1;
         cdef_ctrls->search_best_ref_fs    = is_base ? 0 : 1;
         cdef_ctrls->subsampling_factor    = 4;
-        cdef_ctrls->skip_th               = is_base ? 0 : 80;
+        cdef_ctrls->skip_th               = 0;
         cdef_ctrls->uv_from_y             = true;
         cdef_ctrls->use_qp_strength       = false;
         break;
@@ -1187,7 +1187,7 @@ static void set_cdef_search_controls(PictureParentControlSet* pcs, uint8_t cdef_
         cdef_ctrls->enabled               = 1;
         cdef_ctrls->use_reference_cdef_fs = 0;
         cdef_ctrls->use_qp_strength       = true;
-        cdef_ctrls->skip_th               = is_base ? 0 : 80;
+        cdef_ctrls->skip_th               = 0;
         break;
     default:
         assert(0);
