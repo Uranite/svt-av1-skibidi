@@ -1120,16 +1120,16 @@ EbErrorType svt_av1_set_default_params(EbSvtAv1EncConfiguration* config_ptr) {
     config_ptr->max_qp_allowed               = 63;
     config_ptr->min_qp_allowed               = MIN_QP_AUTO;
     config_ptr->aq_mode                      = 2;
-    config_ptr->enc_mode                     = ENC_M4;
+    config_ptr->enc_mode                     = ENC_M3;
     config_ptr->intra_period_length          = -2;
     config_ptr->min_intra_period_length      = -1;
     config_ptr->multiply_keyint              = false;
     config_ptr->intra_refresh_type           = 2;
     config_ptr->hierarchical_levels          = HIERARCHICAL_LEVELS_AUTO;
     config_ptr->pred_structure               = RANDOM_ACCESS;
-    config_ptr->enable_dlf_flag              = 1;
+    config_ptr->enable_dlf_flag              = 2;
     config_ptr->cdef_level                   = DEFAULT;
-    config_ptr->enable_restoration_filtering = DEFAULT;
+    config_ptr->enable_restoration_filtering = 0;
     config_ptr->enable_mfmv                  = DEFAULT;
     config_ptr->enable_dg                    = 1;
     config_ptr->fast_decode                  = 0;
@@ -1209,8 +1209,8 @@ EbErrorType svt_av1_set_default_params(EbSvtAv1EncConfiguration* config_ptr) {
 
     // Quant Matrices (QM)
     config_ptr->enable_qm           = 1;
-    config_ptr->min_qm_level        = 6;
-    config_ptr->max_qm_level        = 10;
+    config_ptr->min_qm_level        = 4;
+    config_ptr->max_qm_level        = 15;
     config_ptr->min_chroma_qm_level = 8;
     config_ptr->max_chroma_qm_level = 15;
 
@@ -1254,17 +1254,17 @@ EbErrorType svt_av1_set_default_params(EbSvtAv1EncConfiguration* config_ptr) {
 
     config_ptr->noise_norm_strength               = 1;
     config_ptr->kf_tf_strength                    = 1;
-    config_ptr->alt_lambda_factors                = 1;
+    config_ptr->alt_lambda_factors                = 0;
     config_ptr->sharp_tx                          = 1;
     config_ptr->alt_ssim_tuning                   = false;
-    config_ptr->tx_bias                           = 0;
+    config_ptr->tx_bias                           = 2;
     config_ptr->complex_hvs                       = 0;
     config_ptr->noise_adaptive_filtering          = 2;
     config_ptr->cdef_scaling                      = 15;
     config_ptr->auto_tiling                       = true;
     config_ptr->quality_zones                     = NULL;
     config_ptr->num_zones                         = 0;
-    config_ptr->alt_cdef                          = 0;
+    config_ptr->alt_cdef                          = 2;
     config_ptr->alt_dlf                           = 0;
     config_ptr->enable_daala                      = 0;
     config_ptr->enable_daala_rd                   = 0;

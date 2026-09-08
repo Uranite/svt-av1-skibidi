@@ -1,43 +1,14 @@
-# SVT-AV1-Tritium
+# SVT-AV1-Skibidi
 
-SVT-AV1-Tritium is a fork of SVT-AV1-HDR aiming to incorporate features from SVT-AV1-PSYEX and SVT-AV1-Essential. Most notably, SVT-AV1-Tritium has scene detection and auto tiling from Essential.
+SVT-AV1-Skibidi is a fork of SVT-AV1-Tritium with very subjective defaults.
 
-SVT-AV1-Tritium (and SVT-AV1-HDR) is the Scalable Video Technology for AV1 (SVT-AV1 Encoder) with perceptual enhancements for psychovisually optimal SDR and HDR AV1 encoding. The goal is to create the best encoding implementation for perceptual quality with AV1, with additional optimizations for HDR encoding and content with film grain.
+SVT-AV1-Skibidi is the Scalable Video Technology for AV1 (SVT-AV1 Encoder) with perceptual enhancements for psychovisually optimal SDR and HDR AV1 encoding.
 
 Expect diverged history when running `git pull` due to rebasing against SVT-AV1-HDR. If you encounter errors or conflicts, run `git fetch && git reset --hard origin/main` to update instead.
 
 ## Downloads
 
-Currently, there is [HandBrake](https://github.com/Uranite/HandBrake-SVT-AV1-Tritium?tab=readme-ov-file#downloads-and-build-status) build with SVT-AV1-Tritium available.
-
-## Quick Overview
-
-SVT-AV1-Tritium inherits SVT-AV1-HDR's defaults, which were chosen to strike a good balance between **detail retention** and **artifact prevention** across a wide variety of content (e.g. live action, animation and screen recordings).
-
-For the majority of use cases, only three parameters are required to be adjusted: tuning mode, CRF and preset.
-
-Some popular use case examples:
-- Prioritize even further detail retention over artifact prevention (tune VQ):  
-  `--tune 0 --crf xx (any, start with 35) --preset x (2 to 6 recommended)`
-- Prioritize film grain retention (tune Film Grain):  
-  `--tune 5 --crf xx (20 to 40 recommended, start with 30) --preset x (2 *HIGHLY* recommended)`
-- Still image coding (tune IQ + AVIF):  
-  `--tune 3 --crf xx (any, start with 30) --preset x (2 to 6 recommended) --avif 1`
-
-If desired, additional parameters (described down below) are available for further tweaking and hypertuning of the encoding process.
-
-Note: SVT-AV1-Tritium allocates bits in a very different way than (mainline) SVT-AV1, so adjusting the CRF value is expected to match a certain bitrate or file size target.
-
-## Information
-
-Unlike its predecessor (SVT-AV1-PSY), SVT-AV1-HDR features a more relaxed development cycle, and so are its expectations:
-
-- New versions are only used for source code tagging purposes -- no first-party binaries will be provided
-- Rebases onto SVT-AV1 are only guaranteed on **major** version changes (e.g. 4.0, 5.0, etc.)
-- However, minor or patch version releases might still happen in practice
-- Major releases don't have any set dates to ensure the integration of SVT-AV1-HDR's features with the rebased mainline code is solid
-
-For additional docs (build instructions, documentation, usage, etc.), see the [SVT-AV1 README](README_mainline.md).
+Currently, standalone EncApp builds optimized with LTO + PGO can be found [here](https://github.com/Uranite/svt-av1-skibidi/releases), provided by @Akatmks's [GitHub Action](https://github.com/Akatmks/build-svt-av1).
 
 ## Feature Additions
 
@@ -212,11 +183,11 @@ A parameter for modifying loopfilter deblock sharpness and rate distortion to im
 
 - `--dolby-vision-rpu` *path to file*
 
-Set the path to a Dolby Vision RPU for encoding Dolby Vision video. SVT-AV1-Tritium needs to be built with the `enable-libdovi` flag enabled in build.sh (see `./Build/linux/build.sh --help` for more info) (Thank you @quietvoid !)
+Set the path to a Dolby Vision RPU for encoding Dolby Vision video. SVT-AV1-Skibidi needs to be built with the `enable-libdovi` flag enabled in build.sh (see `./Build/linux/build.sh --help` for more info) (Thank you @quietvoid !)
 
 - `--hdr10plus-json` *path to file*
 
-Set the path to an HDR10+ JSON file for encoding HDR10+ video. SVT-AV1-Tritium needs to be built with the `enable-hdr10plus` flag enabled in build.sh (see `./Build/linux/build.sh --help` for more info) (Thank you @quietvoid !)
+Set the path to an HDR10+ JSON file for encoding HDR10+ video. SVT-AV1-Skibidi needs to be built with the `enable-hdr10plus` flag enabled in build.sh (see `./Build/linux/build.sh --help` for more info) (Thank you @quietvoid !)
 
 - `Detailed progress` (**[Merged to Mainline](https://gitlab.com/AOMediaCodec/SVT-AV1/-/merge_requests/2511)**)
 
@@ -272,28 +243,18 @@ Controls noise detection which disables CDEF/restoration when noise level is hig
 
 ### Modified Defaults
 
-While SVT-AV1-HDR has questionable defaults that I'd like to change, I don't want to make the fork situation worse by yet introducing another fork with different defaults that you'd have to learn and remember. Instead, I opted to keep SVT-AV1-HDR defaults, but enable Scene Change Detection and Auto Tiling on top of that
+SVT-AV1-Skibidi defaults that differ from SVT-AV1-HDR:
 
-SVT-AV1-Tritium includes SVT-AV1-HDR's Modified Defaults:
-
-- Set default encoding preset to 4.
-- Default 10-bit color depth when given a 10-bit input.
-- Disable film grain denoising by default, as it often harms visual fidelity. (**[Merged to Mainline](https://gitlab.com/AOMediaCodec/SVT-AV1/-/commit/8b39b41df9e07bbcdbd19ea618762c5db3353c03)**)
-- Enable quantization matrices by default.
-- Set minimum QM level to 6 by default for more consistent performance than min QM level 0 doesn't offer.
-- Set maximum QM level to 10 by default.
-- Set minimum chroma QM level to 8 by default to prevent the encoder from picking suboptimal chroma QMs.
-- `--enable-variance-boost` enabled by default.
-- `--keyint -2` (the default) uses a ~10s GOP size instead of ~5s.
-- `--sharpness 1` by default to prioritize encoder sharpness.
-- Sharp transform optimizations (`--sharp-tx 1`) are enabled by default to supercharge SVT-AV1-HDR ac-bias optimizations. It is recommended to disable it if you don't use `--ac-bias`, which is set to 1.0 by default.
-- `--tf-strength 1` by default for much lower alt-ref temporal filtering to decrease blur for cleaner encoding.
-- `--kf-tf-strength 1` controls are available to the user and are set to 1 by default to remove KF artifacts.
-
-SVT-AV1-Tritium Defaults:
-
-- `--scd 1` by default.
-- `--auto-tiling 1` by default.
+- `--preset 3`
+- `--enable-dlf 2`
+- `--enable-restoration 0`
+- `--qm-min 4`
+- `--qm-max 15`
+- `--alt-lambda-factors 0`
+- `--tx-bias 2`
+- `--enable-alt-cdef 2`
+- `--scd 1`
+- `--auto-tiling 1`
 
 ### Other Changes
 
@@ -309,4 +270,4 @@ Alliance for Open Media Patent License 1.0. See [LICENSE](LICENSE-BSD2.md) and
 under the BSD-3-clause clear license and the Alliance for Open Media Patent
 License 1.0. See [LICENSE](LICENSE.md) and [PATENTS](PATENTS.md) for details.
 
-*SVT-AV1-Tritium does not feature license modifications from mainline SVT-AV1.*
+*SVT-AV1-Skibidi does not feature license modifications from mainline SVT-AV1.*
