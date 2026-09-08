@@ -5071,19 +5071,23 @@ static void copy_api_from_app(SequenceControlSet* scs, EbSvtAv1EncConfiguration*
     // Override settings for Still IQ tune
     if (scs->static_config.tune == TUNE_IQ) {
         SVT_WARN(
-            "Tune IQ overrides: sharpness, Var. Boost strength/curve, enable-qm and min/max level, max TX size and "
-            "SCM\n");
-        scs->static_config.enable_qm               = 1;
-        scs->static_config.min_qm_level            = 4;
-        scs->static_config.max_qm_level            = 10;
-        scs->static_config.min_chroma_qm_level     = scs->allintra && scs->chroma_format_idc == EB_YUV444 ? 2 : 4;
-        scs->static_config.max_chroma_qm_level     = 10;
-        scs->static_config.sharpness               = 7;
-        scs->static_config.enable_variance_boost   = 1;
-        scs->static_config.variance_boost_strength = 3;
-        scs->static_config.variance_boost_curve    = 2;
-        scs->static_config.max_tx_size             = scs->static_config.qp <= 45 ? 32 : 64;
-        scs->static_config.screen_content_mode     = 3;
+            "Tune IQ overrides: sharpness, Var. Boost strength/curve, enable-qm and min/max level, max TX size, "
+            "SCM, ac-bias, sharp-tx, noise-norm-strength, and qp-scale\n");
+        scs->static_config.enable_qm                  = 1;
+        scs->static_config.min_qm_level               = 4;
+        scs->static_config.max_qm_level               = 10;
+        scs->static_config.min_chroma_qm_level        = scs->allintra && scs->chroma_format_idc == EB_YUV444 ? 2 : 4;
+        scs->static_config.max_chroma_qm_level        = 10;
+        scs->static_config.sharpness                  = 7;
+        scs->static_config.enable_variance_boost      = 1;
+        scs->static_config.variance_boost_strength    = 3;
+        scs->static_config.variance_boost_curve       = 2;
+        scs->static_config.max_tx_size                = scs->static_config.qp <= 45 ? 32 : 64;
+        scs->static_config.screen_content_mode        = 3;
+        scs->static_config.ac_bias                    = 0.0;
+        scs->static_config.sharp_tx                   = 0;
+        scs->static_config.noise_norm_strength        = 0;
+        scs->static_config.qp_scale_compress_strength = 0;
     } else if (scs->static_config.tune == TUNE_MS_SSIM) {
         SVT_WARN("Tune MS_SSIM overrides: sharpness, Var. Boost strength/curve, enable-qm and min/max level\n");
         scs->static_config.enable_qm               = 1;
@@ -6159,7 +6163,7 @@ EB_API const char* svt_hdr_get_version(void) {
 
 EB_API void svt_av1_print_version(void) {
     SVT_INFO("-------------------------------------------\n");
-    SVT_INFO("SVT [version]:\tSVT-AV1-Tritium Encoder Lib %s \"Ghost Robot\"\n", SVT_AV1_CVS_VERSION);
+    SVT_INFO("SVT [version]:\tSVT-AV1-Skibidi Encoder Lib %s \"See you next summer\"\n", SVT_AV1_CVS_VERSION);
     const char* compiler =
 #if defined(__clang__) && defined(__apple_build_version__)
         __VERSION__ "\t"
