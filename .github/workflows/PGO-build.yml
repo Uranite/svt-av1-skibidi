@@ -36,7 +36,7 @@ jobs:
       with:
         tag_name: ${{ needs.tag.outputs.tag }}
         target_commitish: pgo-build-tags
-        name: SVT-AV1-Tritium ${{ needs.tag.outputs.name }}
+        name: SVT-AV1-Skibidi ${{ needs.tag.outputs.name }}
         body: |
           Ref `${{ github.ref }}` | Commit `${{ github.sha }}` | Dolby Vision & HDR10+ | FFMS2  
           Windows | x86-64 | LLVM Project Clang LLD | winthread | `icelake-server` + `znver5` | LTO PGO  
