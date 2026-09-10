@@ -2294,18 +2294,9 @@ void svt_aom_sig_deriv_multi_processes_rtc(SequenceControlSet* scs, PictureParen
             if (enc_mode <= ENC_M7) {
                 cdef_search_level = 5;
             } else if (enc_mode <= ENC_M11) {
-                if (pcs->input_resolution <= INPUT_SIZE_360p_RANGE) {
-                    cdef_search_level = 6;
-                } else {
-                    cdef_search_level = is_islice ? 5 : 8;
-                }
+                cdef_search_level = is_islice ? 5 : 6;
             } else if (enc_mode <= ENC_M12 && pcs->pic_avg_variance < RTC_ULTRA_LOW_VARIANCE_TH) {
-                // Ultra-easy M12: keep M11-grade CDEF search for preset continuity.
-                if (pcs->input_resolution <= INPUT_SIZE_360p_RANGE) {
-                    cdef_search_level = 6;
-                } else {
-                    cdef_search_level = is_islice ? 5 : 8;
-                }
+                cdef_search_level = is_islice ? 5 : 6;
             } else {
                 cdef_search_level = is_islice ? 5 : 9;
             }
@@ -2313,11 +2304,7 @@ void svt_aom_sig_deriv_multi_processes_rtc(SequenceControlSet* scs, PictureParen
             if (enc_mode <= ENC_M7) {
                 cdef_search_level = 5;
             } else if (enc_mode <= ENC_M8) {
-                if (pcs->input_resolution <= INPUT_SIZE_360p_RANGE) {
-                    cdef_search_level = 6;
-                } else {
-                    cdef_search_level = is_islice ? 5 : 8;
-                }
+                cdef_search_level = is_islice ? 5 : 6;
             } else {
                 cdef_search_level = is_islice ? 5 : 8;
             }
