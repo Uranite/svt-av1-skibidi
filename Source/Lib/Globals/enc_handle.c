@@ -5034,6 +5034,34 @@ static void copy_api_from_app(SequenceControlSet* scs, EbSvtAv1EncConfiguration*
 
     scs->static_config.hide_banner = config_struct->hide_banner;
 
+    // Alt CDEF
+    scs->static_config.alt_cdef = config_struct->alt_cdef;
+
+    // Alt DLF
+    scs->static_config.alt_dlf = config_struct->alt_dlf;
+
+    // Daala
+    scs->static_config.enable_daala = config_struct->enable_daala;
+    scs->static_config.enable_daala_rd = config_struct->enable_daala_rd;
+    scs->static_config.enable_daala_filtering = config_struct->enable_daala_filtering;
+
+    // Zones
+    if (config_struct->quality_zones && config_struct->num_zones > 0) {
+        EB_NO_THROW_MALLOC(scs->static_config.quality_zones, sizeof(SvtAv1QualityZone) * config_struct->num_zones);
+        memcpy(scs->static_config.quality_zones,
+               config_struct->quality_zones,
+               sizeof(SvtAv1QualityZone) * config_struct->num_zones);
+    } else {
+        scs->static_config.quality_zones = NULL;
+    }
+    scs->static_config.num_zones = config_struct->num_zones;
+
+    scs->static_config.hide_banner = config_struct->hide_banner;
+
+    // Resolve the metric after tune selection, preserving an explicit disable.
+    scs->static_config.enable_qmpsnr = config_struct->enable_qmpsnr == -1 ? scs->static_config.tune == TUNE_IQ
+                                                                          : config_struct->enable_qmpsnr;
+
     // Override settings for Still IQ tune
     if (scs->static_config.tune == TUNE_IQ) {
         SVT_WARN(
