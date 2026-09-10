@@ -248,6 +248,19 @@ jobs:
         fetch-depth: 0
         fetch-tags: true
 
+    - name: Diagnose brew on Intel
+      run: |
+        set +e
+        brew update; echo "brew update exit=$?"
+        for pkg in fastfetch fish; do
+          echo "===== install $pkg ====="
+          brew install --verbose "$pkg" 2>&1 | tee "/tmp/brew-$pkg.log"
+          echo "brew install $pkg exit=${PIPESTATUS[0]}"
+          brew list --versions "$pkg" 2>&1
+          ls -la "$(brew --prefix)/bin/$pkg" 2>&1
+        done
+        grep -nE 'Error|error:|failed|Failure|Warning' /tmp/brew-*.log || true
+
     - uses: Akatmks/build-svt-av1@v1
       with:
         pgo-video: "FoodMarket2"
