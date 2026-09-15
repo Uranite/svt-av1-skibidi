@@ -9211,8 +9211,12 @@ void svt_aom_sig_deriv_mode_decision_config_default(SequenceControlSet* scs, Pic
         pcs->txt_level = 2;
     } else if (enc_mode <= ENC_MR) {
         pcs->txt_level = is_base ? 2 : 3;
+    } else if (enc_mode <= ENC_M1) {
+        pcs->txt_level = is_base ? 2 : 4;
     } else if (enc_mode <= ENC_M2) {
         pcs->txt_level = is_base ? 2 : 5;
+    } else if (enc_mode <= ENC_M3) {
+        pcs->txt_level = is_base ? 5 : 7;
     } else if (enc_mode <= ENC_M10) {
         pcs->txt_level = is_base ? 7 : 9;
     } else if (enc_mode <= ENC_M11) {
