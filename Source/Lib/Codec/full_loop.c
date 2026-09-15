@@ -1882,8 +1882,7 @@ uint8_t svt_aom_quantize_inv_quantize(PictureControlSet* pcs, ModeDecisionContex
 
     // have rdoq be lightly performed for blocks with very low dc saturation under certain conditions
     // to prevent cases of color blotching due to aggressive coefficient decimation/reduction
-    if (is_encode_pass && tx_type != IDTX && component_type != COMPONENT_LUMA && *eob > 0 &&
-        pcs->scs->static_config.tune != TUNE_IQ) {
+    if (is_encode_pass && tx_type != IDTX && component_type != COMPONENT_LUMA && *eob > 0) {
         const TranLow dc = quant_coeff[0];
 
         if (dc >= -1 && dc <= 1 && *eob <= (n_coeffs / 16)) {
